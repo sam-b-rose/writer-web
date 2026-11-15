@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>Writer</title>
+  </head>
+  <body>
+    <div id="progress" class="progress" role="progressbar" aria-label="Loading" aria-valuemin="0" aria-valuemax="100" hidden>
+      <div class="progress-bar"></div>
+    </div>
+    <div id="app">
+      <aside id="library" class="library" aria-label="Library">
+        <div class="library-head">
+          <input id="library-search" type="search" placeholder="Search" spellcheck="false" />
+          <button id="new-doc" class="icon-btn" title="New document (⌥⌘N)" aria-label="New document">
+            <svg viewBox="0 0 16 16"><path d="M8 3v10M3 8h10" /></svg>
+          </button>
+        </div>
+        <div id="library-extras" class="library-extras"></div>
+        <ul id="library-list" class="library-list"></ul>
+      </aside>
+
+      <main class="workspace">
+        <header id="toolbar" class="toolbar">
+          <button id="toggle-library" class="icon-btn" title="Library (⇧⌘L)" aria-label="Toggle library">
+            <svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2" /><path d="M6 3v10" /></svg>
+          </button>
+          <div class="doc-title">
+            <input id="doc-title" type="text" spellcheck="false" autocomplete="off" title="Rename document" aria-label="Document name" />
+          </div>
+          <button id="toggle-preview" class="icon-btn" title="Preview (⌘R)" aria-label="Toggle preview">
+            <svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="10" rx="2" /><path d="M8 3v10M10 6h2M10 8.5h2" /></svg>
+          </button>
+          <button id="toggle-format" class="icon-btn" title="Format" aria-label="Format">
+            <svg viewBox="0 0 16 16"><path d="M2.5 12.5 5.5 4l3 8.5M3.6 10h3.8" /><circle cx="11.8" cy="10.4" r="2.1" style="fill:none;stroke-width:1.4" /><path d="M13.9 8.2v4.3" /></svg>
+          </button>
+          <button id="toggle-menu" class="icon-btn" title="View" aria-label="View options">
+            <svg viewBox="0 0 16 16"><circle cx="4" cy="8" r=".6" /><circle cx="8" cy="8" r=".6" /><circle cx="12" cy="8" r=".6" /></svg>
+          </button>
+        </header>
+
+        <div id="save-warning" class="save-warning" role="alert" hidden>
+          <div>
+            <strong>Changes aren’t being saved.</strong>
+            <span id="save-warning-reason"></span>
+            Keep this tab open and download a copy.
+          </div>
+          <button id="save-download">Download Markdown</button>
+          <button id="save-retry">Try Again</button>
+        </div>
+
+        <div class="panes">
+          <section id="editor" class="editor-pane"></section>
+          <section id="preview" class="preview-pane" hidden>
+            <article id="preview-body" class="preview-doc"></article>
+          </section>
+        </div>
+
+        <footer class="statusbar">
+          <button id="stats" class="stats"></button>
+        </footer>
+      </main>
+
+      <div id="menu" class="menu" hidden></div>
+      <dialog id="sheet" class="sheet"></dialog>
+
+      <div id="quick" class="quick" hidden>
+        <div class="quick-box">
+          <input id="quick-input" type="text" placeholder="Search library" spellcheck="false" />
+          <ul id="quick-list"></ul>
+        </div>
+      </div>
+
+      <input id="file-input" type="file" accept=".md,.markdown,.txt,text/plain,text/markdown" multiple hidden />
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
