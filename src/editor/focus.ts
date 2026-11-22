@@ -66,25 +66,37 @@ function scrollDuration(distance: number) {
   return reducedMotion.matches ? 0 : Math.min(Math.max(120 * Math.sqrt(distance / 30), 120), 300)
 }
 
-function easeInOut(t: number) {
-  return t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2
+function easeOut(t: number) {
+  return 1 - (1 - t) ** 3
 }
 
 const centerCaret = ViewPlugin.fromClass(
   class {
     frame = 0
+    resize = new ResizeObserver(() => this.center())
+    pointerSelected = false
 
     constructor(readonly view: EditorView) {
       this.center(view.contentDOM.getBoundingClientRect().top)
+      this.resize.observe(view.scrollDOM)
+      window.addEventListener('pointerup', this.release)
     }
 
     update(update: ViewUpdate) {
       const pointer = update.transactions.some((tr) => tr.isUserEvent('select.pointer'))
-      if ((update.docChanged || update.selectionSet) && !pointer) this.center()
+      if (pointer && update.selectionSet) this.pointerSelected = true
+      else if (update.docChanged || update.selectionSet) this.center()
+    }
+
+    release = () => {
+      if (this.pointerSelected) this.center()
+      this.pointerSelected = false
     }
 
     destroy() {
       cancelAnimationFrame(this.frame)
+      this.resize.disconnect()
+      window.removeEventListener('pointerup', this.release)
     }
 
     center(contentTopBefore?: number) {
@@ -117,7 +129,7 @@ const centerCaret = ViewPlugin.fromClass(
       const began = performance.now()
       const step = (now: number) => {
         const progress = duration ? Math.min((now - began) / duration, 1) : 1
-        scroller.scrollTop = start + distance * easeInOut(progress)
+        scroller.scrollTop = start + distance * easeOut(progress)
         if (progress < 1) this.frame = requestAnimationFrame(step)
       }
       this.frame = requestAnimationFrame(step)
