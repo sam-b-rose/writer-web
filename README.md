@@ -7,6 +7,8 @@ npm install
 npm run dev
 ```
 
+Pushes to `main` deploy to [writer.samrose.me](https://writer.samrose.me) via Cloudflare Workers Builds.
+
 ## Features
 
 - **Library**: documents live in IndexedDB (migrated automatically from `localStorage`; falls back to it if IndexedDB is unavailable), and a visible warning appears if a save fails. Documents are sorted by date or name, searchable. Hashtags appear as chips under the search field, and a search can be saved as a smart folder. Drag in or open `.md`/`.txt` files.
